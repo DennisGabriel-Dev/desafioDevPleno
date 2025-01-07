@@ -9,5 +9,6 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
+  rolify
   has_secure_password
 end
