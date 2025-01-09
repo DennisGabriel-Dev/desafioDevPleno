@@ -56,4 +56,5 @@ end
 group :development do
   # https://github.com/drwl/annotaterb
   gem "annotaterb"
+  gem 'pry', '~> 0.15.0'
 end
