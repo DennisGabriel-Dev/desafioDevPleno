@@ -5,7 +5,8 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
-      user.add_role(UserRoles::SHOPKEEPER)
+      # user.add_role(UserRoles::SHOPKEEPER)
+      Shopkeeper.create(user: )
       token = encode_token(user_id: user.id)
       render json: {user: { token: token }}, status: :created
     else
