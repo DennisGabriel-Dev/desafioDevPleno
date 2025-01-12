@@ -18,6 +18,7 @@
 class Shopkeeper < ApplicationRecord
   belongs_to :user
   has_many :sellers
+  has_many :customers
 
   def email = user.email
 end

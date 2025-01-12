@@ -23,5 +23,7 @@ class Seller < ApplicationRecord
   belongs_to :user
   belongs_to :shopkeeper, optional: true
 
+  has_many :customers
+
   def email = user.email
 end
