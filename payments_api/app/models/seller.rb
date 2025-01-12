@@ -3,11 +3,10 @@
 # Table name: sellers
 #
 #  id            :integer          not null, primary key
-#  commission    :decimal(, )      default(0.0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  shopkeeper_id :integer          not null
-#  user_id       :integer          not null
+#  user_id       :integer
 #
 # Indexes
 #
@@ -23,7 +22,9 @@ class Seller < ApplicationRecord
   belongs_to :user
   belongs_to :shopkeeper, optional: true
 
+  has_one :commission
   has_many :customers
+  has_many :payments
 
   def email = user.email
 end

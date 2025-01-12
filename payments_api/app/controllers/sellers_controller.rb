@@ -9,11 +9,13 @@ class SellersController < UsersController
 
     user = User.new(email: user_params[:email], password: user_params[:password])
     if user.save
-      seller = shopkeeper.sellers.build(user: user, commission: user_params[:seller][:commission])
+      commission = Commission.create(percentage_value: user_params[:seller][:commission])
+      seller = shopkeeper.sellers.build(user: user, commission: )
       if seller.save
         token = encode_token(user_id: user.id)
         render json: { user: { token: token } }, status: :created
       else
+        commission.destroy
         user.destroy
         render json: seller.errors, status: :unprocessable_entity
       end

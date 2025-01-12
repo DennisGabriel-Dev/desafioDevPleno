@@ -10,18 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_12_005701) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_12_035848) do
+  create_table "commissions", force: :cascade do |t|
+    t.decimal "percentage_value"
+    t.integer "seller_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["seller_id"], name: "index_commissions_on_seller_id"
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.integer "shopkeeper_id", null: false
-    t.integer "seller_id"
+    t.integer "seller_id", null: false
     t.string "phone"
     t.string "document"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["seller_id"], name: "index_customers_on_seller_id"
-    t.index ["shopkeeper_id"], name: "index_customers_on_shopkeeper_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "customer_id", null: false
+    t.integer "seller_id", null: false
+    t.integer "status", default: 0
+    t.decimal "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_payments_on_customer_id"
+    t.index ["seller_id"], name: "index_payments_on_seller_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -36,11 +53,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_005701) do
   end
 
   create_table "sellers", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "shopkeeper_id", null: false
-    t.decimal "commission", default: "0.0"
     t.index ["shopkeeper_id"], name: "index_sellers_on_shopkeeper_id"
     t.index ["user_id"], name: "index_sellers_on_user_id"
   end
@@ -67,8 +83,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_12_005701) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "commissions", "sellers"
   add_foreign_key "customers", "sellers"
-  add_foreign_key "customers", "shopkeepers"
+  add_foreign_key "payments", "customers"
+  add_foreign_key "payments", "sellers"
   add_foreign_key "sellers", "shopkeepers"
   add_foreign_key "sellers", "users"
   add_foreign_key "shopkeepers", "users"
